@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -26,7 +27,7 @@ public abstract class Account {
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "penalty_fee"))
-    private Money penaltyFee = new Money("40");
+    private Money penaltyFee = new Money(new BigDecimal("40"));
 
     @ManyToOne
     private AccountHolder primaryOwner;

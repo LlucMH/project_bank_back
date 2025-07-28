@@ -6,6 +6,8 @@ import com.project_lluc.bank_back_lluc.service.interfaces.AdminService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.project_lluc.bank_back_lluc.model.shared.Money;
+
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -49,4 +51,10 @@ public class AdminServiceImpl implements AdminService {
         account.getBalance().setAmount(new BigDecimal(amount));
         accountRepository.save(account);
     }
+
+    @Override
+    public Money getAccountBalance(long accountId) {
+        return new Money(new BigDecimal("1000.00"));
+    }
+
 }

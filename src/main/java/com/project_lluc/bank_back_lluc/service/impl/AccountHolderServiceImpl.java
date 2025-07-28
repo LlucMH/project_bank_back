@@ -3,6 +3,7 @@ package com.project_lluc.bank_back_lluc.service.impl;
 import com.project_lluc.bank_back_lluc.model.accounts.Account;
 import com.project_lluc.bank_back_lluc.model.users.AccountHolder;
 import com.project_lluc.bank_back_lluc.repository.AccountRepository;
+import com.project_lluc.bank_back_lluc.model.shared.Money;
 import com.project_lluc.bank_back_lluc.service.interfaces.AccountHolderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -51,4 +52,11 @@ public class AccountHolderServiceImpl implements AccountHolderService {
         accountRepository.save(from);
         accountRepository.save(to);
     }
+
+    @Override
+    public Money getAccountBalance(long accountId, String username) {
+        // implementación real, por ahora un dummy:
+        return new Money(new BigDecimal("1000.00"));
+    }
+
 }

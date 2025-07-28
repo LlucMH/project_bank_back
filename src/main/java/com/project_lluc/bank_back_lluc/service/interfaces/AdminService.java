@@ -1,6 +1,7 @@
 package com.project_lluc.bank_back_lluc.service.interfaces;
 
 import com.project_lluc.bank_back_lluc.model.accounts.*;
+import com.project_lluc.bank_back_lluc.model.shared.Money;
 
 public interface AdminService {
 
@@ -10,4 +11,6 @@ public interface AdminService {
     CreditCard createCreditCardAccount(CreditCard account);
 
     void updateBalance(Long accountId, String amount);
+
+    Money getAccountBalance(long accountId);
 }
