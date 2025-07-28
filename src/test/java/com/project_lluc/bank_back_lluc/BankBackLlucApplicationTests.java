@@ -9,5 +9,4 @@ class BankBackLlucApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

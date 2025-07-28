@@ -2,6 +2,7 @@ package com.project_lluc.bank_back_lluc.service.impl;
 
 import com.project_lluc.bank_back_lluc.model.users.User;
 import com.project_lluc.bank_back_lluc.service.interfaces.UserService;
+import com.project_lluc.bank_back_lluc.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,5 +25,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }
-}
 
+    @Override
+    public User save(User user) { return userRepository.save(user); }
+}

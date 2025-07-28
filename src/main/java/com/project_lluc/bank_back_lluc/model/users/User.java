@@ -1,3 +1,11 @@
+package com.project_lluc.bank_back_lluc.model.users;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter

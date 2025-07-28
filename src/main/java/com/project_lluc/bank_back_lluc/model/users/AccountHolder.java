@@ -1,4 +1,5 @@
 package com.project_lluc.bank_back_lluc.model.users;
+import com.project_lluc.bank_back_lluc.model.shared.Address;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
