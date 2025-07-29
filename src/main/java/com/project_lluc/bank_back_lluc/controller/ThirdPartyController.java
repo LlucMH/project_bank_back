@@ -18,7 +18,6 @@ public class ThirdPartyController {
     @PostMapping("/send")
     public ResponseEntity<String> sendMoney(@RequestHeader("hashed-key") String hashedKey,
                                             @RequestBody ThirdPartyTransactionDTO dto) {
-        // Aseguramos que los tipos coinciden con la interfaz
         Long accountId = dto.getAccountId();
         String secretKey = dto.getSecretKey();
         BigDecimal amount = dto.getAmount();
@@ -30,7 +29,6 @@ public class ThirdPartyController {
     @PostMapping("/receive")
     public ResponseEntity<String> receiveMoney(@RequestHeader("hashed-key") String hashedKey,
                                                @RequestBody ThirdPartyTransactionDTO dto) {
-        // Aseguramos que los tipos coinciden con la interfaz
         Long accountId = dto.getAccountId();
         String secretKey = dto.getSecretKey();
         BigDecimal amount = dto.getAmount();

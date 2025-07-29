@@ -55,7 +55,6 @@ public class AccountHolderServiceImpl implements AccountHolderService {
 
     @Override
     public Money getAccountBalance(long accountId, String username) {
-        // implementación real, por ahora un dummy:
         return new Money(new BigDecimal("1000.00"));
     }
 

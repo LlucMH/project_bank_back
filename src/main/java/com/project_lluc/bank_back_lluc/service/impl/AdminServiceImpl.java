@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.project_lluc.bank_back_lluc.model.shared.Money;
 import jakarta.persistence.EntityNotFoundException;
+import com.project_lluc.bank_back_lluc.model.enums.Status;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -62,6 +63,14 @@ public class AdminServiceImpl implements AdminService {
         accountRepository.findById(accountId)
                 .orElseThrow(() -> new EntityNotFoundException("Account not found: " + accountId));
         accountRepository.deleteById(accountId);
+    }
+
+    @Override
+    public void updateAccountStatus(Long id, String status) {
+        Account acc = accountRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found: " + id));
+        acc.setStatus(Status.valueOf(status));
+        accountRepository.save(acc);
     }
 
 }

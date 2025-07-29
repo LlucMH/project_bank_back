@@ -10,5 +10,4 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Admin extends User {
-    // No fields extra for now
 }

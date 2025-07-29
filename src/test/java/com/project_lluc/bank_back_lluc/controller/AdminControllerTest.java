@@ -85,4 +85,17 @@ public class AdminControllerTest {
 
         Mockito.verify(adminService).deleteAccount(1L);
     }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void testUpdateAccountStatus_AsAdmin() throws Exception {
+        mockMvc.perform(patch("/api/admin/accounts/1/status")
+                        .param("status", "FROZEN")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Status updated to FROZEN"));
+
+        Mockito.verify(adminService).updateAccountStatus(1L, "FROZEN");
+    }
+
 }

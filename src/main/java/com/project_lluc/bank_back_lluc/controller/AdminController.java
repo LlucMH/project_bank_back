@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminController {
 
+    private final AdminService adminService;
+
     @GetMapping("/accounts/{id}/balance")
     public ResponseEntity<String> getAccountBalance(@PathVariable Long id) {
         Money balance = adminService.getAccountBalance(id);
         return ResponseEntity.ok(balance.getAmount().toString());
     }
-
-    private final AdminService adminService;
 
     @PostMapping("/checking")
     public ResponseEntity<Checking> createChecking(@RequestBody Checking checking) {
@@ -49,6 +49,13 @@ public class AdminController {
         adminService.updateBalance(id, newBalance.getAmount().toString());
         Money updated = adminService.getAccountBalance(id);
         return ResponseEntity.ok(updated.getAmount().toString());
+    }
+
+    @PatchMapping("/accounts/{id}/status")
+    public ResponseEntity<String> updateAccountStatus(@PathVariable Long id,
+                                                      @RequestParam String status) {
+        adminService.updateAccountStatus(id, status);
+        return ResponseEntity.ok("Status updated to " + status);
     }
 
     @DeleteMapping("/accounts/{id}")

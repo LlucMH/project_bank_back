@@ -16,4 +16,6 @@ public interface AdminService {
 
     void deleteAccount(Long accountId);
 
+    void updateAccountStatus(Long id, String status);
+
 }

@@ -60,6 +60,6 @@ public class ThirdPartyServiceImpl implements ThirdPartyService {
         if (account instanceof com.project_lluc.bank_back_lluc.model.accounts.Savings savings) {
             return savings.getSecretKey().equals(secretKey);
         }
-        return false; // CreditCard no debería tener secretKey validable por terceros
+        return false;
     }
 }
