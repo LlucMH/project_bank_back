@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/third-party")
 @RequiredArgsConstructor
@@ -16,14 +18,24 @@ public class ThirdPartyController {
     @PostMapping("/send")
     public ResponseEntity<String> sendMoney(@RequestHeader("hashed-key") String hashedKey,
                                             @RequestBody ThirdPartyTransactionDTO dto) {
-        thirdPartyService.sendMoney(hashedKey, dto.getAccountId(), dto.getSecretKey(), dto.getAmount());
+        // Aseguramos que los tipos coinciden con la interfaz
+        Long accountId = dto.getAccountId();
+        String secretKey = dto.getSecretKey();
+        BigDecimal amount = dto.getAmount();
+
+        thirdPartyService.sendMoney(hashedKey, accountId, secretKey, amount);
         return ResponseEntity.ok("Money sent");
     }
 
     @PostMapping("/receive")
     public ResponseEntity<String> receiveMoney(@RequestHeader("hashed-key") String hashedKey,
                                                @RequestBody ThirdPartyTransactionDTO dto) {
-        thirdPartyService.receiveMoney(hashedKey, dto.getAccountId(), dto.getSecretKey(), dto.getAmount());
+        // Aseguramos que los tipos coinciden con la interfaz
+        Long accountId = dto.getAccountId();
+        String secretKey = dto.getSecretKey();
+        BigDecimal amount = dto.getAmount();
+
+        thirdPartyService.receiveMoney(hashedKey, accountId, secretKey, amount);
         return ResponseEntity.ok("Money received");
     }
 }

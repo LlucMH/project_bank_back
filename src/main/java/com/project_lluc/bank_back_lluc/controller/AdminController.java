@@ -1,15 +1,25 @@
 package com.project_lluc.bank_back_lluc.controller;
 
-import com.project_lluc.bank_back_lluc.model.accounts.*;
+import com.project_lluc.bank_back_lluc.model.accounts.CreditCard;
+import com.project_lluc.bank_back_lluc.model.accounts.Savings;
+import com.project_lluc.bank_back_lluc.model.accounts.Checking;
+import com.project_lluc.bank_back_lluc.model.accounts.StudentChecking;
+import com.project_lluc.bank_back_lluc.model.shared.Money;
 import com.project_lluc.bank_back_lluc.service.interfaces.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
+    @GetMapping("/accounts/{id}/balance")
+    public ResponseEntity<String> getAccountBalance(@PathVariable Long id) {
+        Money balance = adminService.getAccountBalance(id);
+        return ResponseEntity.ok(balance.getAmount().toString());
+    }
 
     private final AdminService adminService;
 
@@ -34,8 +44,10 @@ public class AdminController {
     }
 
     @PatchMapping("/accounts/{id}/balance")
-    public ResponseEntity<String> updateBalance(@PathVariable Long id, @RequestParam String amount) {
-        adminService.updateBalance(id, amount);
-        return ResponseEntity.ok("Balance updated successfully.");
+    public ResponseEntity<String> updateBalance(@PathVariable Long id,
+                                                @RequestBody Money newBalance) {
+        adminService.updateBalance(id, newBalance.getAmount().toString());
+        Money updated = adminService.getAccountBalance(id);
+        return ResponseEntity.ok(updated.getAmount().toString());
     }
 }
