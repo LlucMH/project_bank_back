@@ -17,6 +17,9 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    /**
+     * Obtiene el balance de la cuenta con id dado.
+     */
     @GetMapping("/accounts/{id}/balance")
     public ResponseEntity<String> getAccountBalance(@PathVariable Long id) {
         Money balance = adminService.getAccountBalance(id);
@@ -43,21 +46,32 @@ public class AdminController {
         return ResponseEntity.ok(adminService.createCreditCardAccount(creditCard));
     }
 
+    /**
+     * Actualiza el balance de la cuenta.
+     */
     @PatchMapping("/accounts/{id}/balance")
-    public ResponseEntity<String> updateBalance(@PathVariable Long id,
-                                                @RequestBody Money newBalance) {
+    public ResponseEntity<String> updateBalance(
+            @PathVariable Long id,
+            @RequestBody Money newBalance) {
         adminService.updateBalance(id, newBalance.getAmount().toString());
         Money updated = adminService.getAccountBalance(id);
         return ResponseEntity.ok(updated.getAmount().toString());
     }
 
+    /**
+     * Actualiza el estado de la cuenta (e.g. ACTIVE, FROZEN).
+     */
     @PatchMapping("/accounts/{id}/status")
-    public ResponseEntity<String> updateAccountStatus(@PathVariable Long id,
-                                                      @RequestParam String status) {
+    public ResponseEntity<String> updateAccountStatus(
+            @PathVariable Long id,
+            @RequestParam String status) {
         adminService.updateAccountStatus(id, status);
         return ResponseEntity.ok("Status updated to " + status);
     }
 
+    /**
+     * Elimina la cuenta con el id dado.
+     */
     @DeleteMapping("/accounts/{id}")
     public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
         adminService.deleteAccount(id);

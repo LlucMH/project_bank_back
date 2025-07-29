@@ -1,20 +1,17 @@
 package com.project_lluc.bank_back_lluc.service.impl;
 
 import com.project_lluc.bank_back_lluc.model.users.User;
-import com.project_lluc.bank_back_lluc.model.users.Admin;
-import com.project_lluc.bank_back_lluc.service.interfaces.UserService;
 import com.project_lluc.bank_back_lluc.repository.UserRepository;
-import com.project_lluc.bank_back_lluc.model.users.AccountHolder;
-import com.project_lluc.bank_back_lluc.model.users.ThirdParty;
-import jakarta.transaction.Transactional;
+import com.project_lluc.bank_back_lluc.service.interfaces.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -30,18 +27,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AccountHolder save(AccountHolder accountHolder) {
-        return userRepository.save(accountHolder);
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public Admin save(Admin admin) {
-        return userRepository.save(admin);
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
-    public ThirdParty save(ThirdParty thirdParty) {
-        return userRepository.save(thirdParty);
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado: " + id));
     }
 
+    @Override
+    public User updateUser(Long id, User user) {
+        User existing = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado: " + id));
+        existing.setName(user.getName());
+        existing.setUsername(user.getUsername());
+        existing.setPassword(user.getPassword());
+        return userRepository.save(existing);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException("Usuario no encontrado: " + id);
+        }
+        userRepository.deleteById(id);
+    }
 }

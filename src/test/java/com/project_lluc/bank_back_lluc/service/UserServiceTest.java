@@ -36,7 +36,7 @@ public class UserServiceTest {
         accountHolder.setPassword("secret");
         accountHolder.setDateOfBirth(LocalDate.of(2000, 1, 1));
 
-        userService.save(accountHolder);
+        userService.createUser(accountHolder);
 
         ArgumentCaptor<AccountHolder> captor = ArgumentCaptor.forClass(AccountHolder.class);
         verify(userRepository, times(1)).save(captor.capture());
@@ -51,7 +51,7 @@ public class UserServiceTest {
         admin.setUsername("admin");
         admin.setPassword("pass");
 
-        userService.save(admin);
+        userService.createUser(admin);
 
         verify(userRepository).save(admin);
     }
@@ -62,7 +62,7 @@ public class UserServiceTest {
         thirdParty.setName("Stripe");
         thirdParty.setHashedKey("abc123hashed");
 
-        userService.save(thirdParty);
+        userService.createUser(thirdParty);
 
         verify(userRepository).save(thirdParty);
     }
