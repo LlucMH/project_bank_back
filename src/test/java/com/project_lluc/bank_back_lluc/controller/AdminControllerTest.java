@@ -7,14 +7,15 @@ import com.project_lluc.bank_back_lluc.service.interfaces.AdminService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,5 +74,15 @@ public class AdminControllerTest {
     void testUnauthorizedAccess() throws Exception {
         mockMvc.perform(get("/api/admin/accounts/1/balance"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void testDeleteAccount_AsAdmin() throws Exception {
+        mockMvc.perform(delete("/api/admin/accounts/1")
+                        .with(csrf()))
+                .andExpect(status().isNoContent());
+
+        Mockito.verify(adminService).deleteAccount(1L);
     }
 }

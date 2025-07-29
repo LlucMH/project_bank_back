@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.project_lluc.bank_back_lluc.model.shared.Money;
-
+import jakarta.persistence.EntityNotFoundException;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -55,6 +55,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Money getAccountBalance(long accountId) {
         return new Money(new BigDecimal("1000.00"));
+    }
+
+    @Override
+    public void deleteAccount(Long accountId) {
+        accountRepository.findById(accountId)
+                .orElseThrow(() -> new EntityNotFoundException("Account not found: " + accountId));
+        accountRepository.deleteById(accountId);
     }
 
 }

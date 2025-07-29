@@ -50,4 +50,10 @@ public class AdminController {
         Money updated = adminService.getAccountBalance(id);
         return ResponseEntity.ok(updated.getAmount().toString());
     }
+
+    @DeleteMapping("/accounts/{id}")
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+        adminService.deleteAccount(id);
+        return ResponseEntity.noContent().build();
+    }
 }

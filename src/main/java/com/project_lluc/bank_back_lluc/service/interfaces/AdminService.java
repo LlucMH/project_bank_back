@@ -13,4 +13,7 @@ public interface AdminService {
     void updateBalance(Long accountId, String amount);
 
     Money getAccountBalance(long accountId);
+
+    void deleteAccount(Long accountId);
+
 }
