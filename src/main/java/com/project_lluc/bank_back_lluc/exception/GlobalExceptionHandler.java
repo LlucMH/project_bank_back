@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 // tus excepciones
@@ -24,6 +25,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInsufficient(InsufficientFundsException ex) {
         ErrorDTO body = new ErrorDTO("INSUFFICIENT_FUNDS", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<ErrorDTO> handleMissingHeader(MissingRequestHeaderException ex) {
+        ErrorDTO body = new ErrorDTO("BAD_REQUEST",
+                "Required header '" + ex.getHeaderName() + "' is missing");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(body);
     }
 
     @ExceptionHandler(Exception.class)

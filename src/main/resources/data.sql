@@ -92,4 +92,4 @@ INSERT INTO credit_card (
 -- ===========================
 INSERT INTO third_party (id, name, hashed_key) VALUES
   (1, 'PayrollService', 'a1b2c3d4-e5f6-4712-89ab-cdef01234567'),
-  (2, 'PaymentGateway',  'f6e5d4c3-b2a1-6789-4321-fedcba987654');
+  (2, 'PaymentGateway', 'f6e5d4c3-b2a1-6789-4321-fedcba987654');

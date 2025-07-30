@@ -9,37 +9,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/third-party/accounts")
 public class ThirdPartyController {
 
-    private final ThirdPartyService thirdPartyService;
+    private final ThirdPartyService service;
 
-    public ThirdPartyController(ThirdPartyService thirdPartyService) {
-        this.thirdPartyService = thirdPartyService;
+    public ThirdPartyController(ThirdPartyService service) {
+        this.service = service;
     }
 
     @PostMapping("/send")
     public ResponseEntity<Void> sendMoney(
-            @RequestHeader("hashed-key") String hashedKey,
+            @RequestHeader(name = "hashed-key", required = true) String hashedKey,
             @RequestBody ThirdPartyTransactionDTO dto
     ) {
-        thirdPartyService.sendMoney(
-                hashedKey,
-                dto.getAccountId(),
-                dto.getSecretKey(),
-                dto.getAmount()
-        );
+        service.sendMoney(hashedKey, dto.getAccountId(), dto.getSecretKey(), dto.getAmount());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/receive")
     public ResponseEntity<Void> receiveMoney(
-            @RequestHeader("hashed-key") String hashedKey,
+            @RequestHeader(name = "hashed-key", required = true) String hashedKey,
             @RequestBody ThirdPartyTransactionDTO dto
     ) {
-        thirdPartyService.receiveMoney(
-                hashedKey,
-                dto.getAccountId(),
-                dto.getSecretKey(),
-                dto.getAmount()
-        );
+        service.receiveMoney(hashedKey, dto.getAccountId(), dto.getSecretKey(), dto.getAmount());
         return ResponseEntity.ok().build();
     }
 }
+
