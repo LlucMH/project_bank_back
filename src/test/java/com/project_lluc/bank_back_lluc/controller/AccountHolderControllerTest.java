@@ -63,7 +63,7 @@ public class AccountHolderControllerTest {
         Mockito.when(accountHolderService.getAccountBalance(anyLong(), anyString()))
                 .thenReturn(account.getBalance());
 
-        mockMvc.perform(get("/account-holder/accounts/1/balance")
+        mockMvc.perform(get("/api/account-holder/accounts/1/balance")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("1000.00"));
@@ -71,7 +71,7 @@ public class AccountHolderControllerTest {
 
     @Test
     void testGetBalanceUnauthorized() throws Exception {
-        mockMvc.perform(get("/account-holder/accounts/1/balance")
+        mockMvc.perform(get("/api/account-holder/accounts/1/balance")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
     }

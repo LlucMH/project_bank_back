@@ -7,22 +7,21 @@ import com.project_lluc.bank_back_lluc.service.interfaces.AdminService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+
+import java.math.BigDecimal;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import java.math.BigDecimal;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.ArgumentMatchers.eq;
-
-@SuppressWarnings("deprecation")
 @WebMvcTest(AdminController.class)
 public class AdminControllerTest {
 
@@ -55,20 +54,21 @@ public class AdminControllerTest {
                 .andExpect(content().string(balance.getAmount().toString()));
     }
 
-/*
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testUpdateAccountBalance_AsAdmin() throws Exception {
         Money newBalance = new Money(new BigDecimal("2000.00"));
-        Mockito.when(adminService.updateBalance(eq(1L), eq(newBalance))).thenReturn(newBalance);
+        // we don't stub updateBalance since it returns void; stub getAccountBalance after update
+        Mockito.doNothing().when(adminService).updateBalance(eq(1L), eq(newBalance.getAmount().toString()));
+        Mockito.when(adminService.getAccountBalance(eq(1L))).thenReturn(newBalance);
 
         mockMvc.perform(patch("/api/admin/accounts/1/balance")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newBalance)))
                 .andExpect(status().isOk())
                 .andExpect(content().string(newBalance.getAmount().toString()));
     }
-*/
 
     @Test
     void testUnauthorizedAccess() throws Exception {
@@ -79,6 +79,8 @@ public class AdminControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testDeleteAccount_AsAdmin() throws Exception {
+        Mockito.doNothing().when(adminService).deleteAccount(eq(1L));
+
         mockMvc.perform(delete("/api/admin/accounts/1")
                         .with(csrf()))
                 .andExpect(status().isNoContent());
@@ -89,6 +91,8 @@ public class AdminControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void testUpdateAccountStatus_AsAdmin() throws Exception {
+        Mockito.doNothing().when(adminService).updateAccountStatus(eq(1L), eq("FROZEN"));
+
         mockMvc.perform(patch("/api/admin/accounts/1/status")
                         .param("status", "FROZEN")
                         .with(csrf()))
@@ -97,5 +101,4 @@ public class AdminControllerTest {
 
         Mockito.verify(adminService).updateAccountStatus(1L, "FROZEN");
     }
-
 }

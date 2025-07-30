@@ -55,7 +55,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Money getAccountBalance(long accountId) {
-        return new Money(new BigDecimal("1000.00"));
+        Account account = accountRepository.findById(accountId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Account not found: " + accountId));
+        return account.getBalance();
     }
 
     @Override

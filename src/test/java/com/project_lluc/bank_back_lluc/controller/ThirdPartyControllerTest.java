@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ThirdPartyController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@WithMockUser(username = "thirdp", roles = {"THIRD_PARTY"})
 public class ThirdPartyControllerTest {
 
     @Autowired
@@ -37,7 +39,7 @@ public class ThirdPartyControllerTest {
         dto.setAccountId(1L);
         dto.setSecretKey("secret123");
 
-        mockMvc.perform(post("/third-party/send")
+        mockMvc.perform(post("/third-party/accounts/send")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isBadRequest());
@@ -50,18 +52,14 @@ public class ThirdPartyControllerTest {
         dto.setAccountId(1L);
         dto.setSecretKey("secret123");
 
-        mockMvc.perform(post("/third-party/send")
+        mockMvc.perform(post("/third-party/accounts/send")
                         .header("hashed-key", "VALID_HASHED_KEY")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
 
-        Mockito.verify(thirdPartyService).sendMoney(
-                Mockito.eq("VALID_HASHED_KEY"),
-                Mockito.eq(1L),
-                Mockito.eq("secret123"),
-                Mockito.eq(new BigDecimal("100.00"))
-        );
+        Mockito.verify(thirdPartyService)
+                .sendMoney("VALID_HASHED_KEY", 1L, "secret123", new BigDecimal("100.00"));
     }
 
     @Test
@@ -71,17 +69,13 @@ public class ThirdPartyControllerTest {
         dto.setAccountId(2L);
         dto.setSecretKey("secret456");
 
-        mockMvc.perform(post("/third-party/receive")
+        mockMvc.perform(post("/third-party/accounts/receive")
                         .header("hashed-key", "VALID_HASHED_KEY")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
 
-        Mockito.verify(thirdPartyService).receiveMoney(
-                Mockito.eq("VALID_HASHED_KEY"),
-                Mockito.eq(2L),
-                Mockito.eq("secret456"),
-                Mockito.eq(new BigDecimal("50.00"))
-        );
+        Mockito.verify(thirdPartyService)
+                .receiveMoney("VALID_HASHED_KEY", 2L, "secret456", new BigDecimal("50.00"));
     }
 }
