@@ -10,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
@@ -20,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ThirdPartyController.class)
 @AutoConfigureMockMvc(addFilters = false)
-@WithMockUser(username = "thirdp", roles = {"THIRD_PARTY"})
 public class ThirdPartyControllerTest {
 
     @Autowired
@@ -79,3 +77,4 @@ public class ThirdPartyControllerTest {
                 .receiveMoney("VALID_HASHED_KEY", 2L, "secret456", new BigDecimal("50.00"));
     }
 }
+
