@@ -19,6 +19,8 @@ This project implements the backend logic for a secure **banking system**, manag
 5. [Setup and Configuration](#setup-and-configuration)
 6. [Running the Application](#running-the-application)
 7. [Testing](#testing)
+8. [API Testing with Postman](#API Testing with Postman)
+9. [Presentation](#presentation)
 8. [Contributing](#contributing)
 9. [License](#license)
 10. [Author](#author)
@@ -55,25 +57,32 @@ The code follows a standard layered architecture:
 
 To visualize the system, refer to the UML diagrams under the `diagrams/` folder:
 
-### Sequence Diagram: Money Transfer
+### Figure 1: Use‑Case Diagram
+![Use‑Case Diagram](diagrams/use-case.png)
 
-![sendMoneySequenceDiagram.png](Img/sendMoneySequenceDiagram.png)
+### Figure 2: Class Diagram
+![Class Diagram](diagrams/class-diagram.png)
 
-### Sequence Diagram with Exception Handling
+### Figure 3: Sequence Diagram – Send Money
+![third-party-sequence.png](diagrams/third-party-sequence.png)
 
-![sendMoneySequenceDiagramWithException.png](Img/sendMoneySequenceDiagramWithException.png)
+### Figure 4: Sequence Diagram – Send Money With Exception
+![third-party-sequenceWithException.png](diagrams/third-party-sequenceWithException.png)
 
-### State Diagram: Account Lifecycle
+### Figure 5: State Diagram
+![Account Lifecycle](diagrams/state-diagram.png)
 
-![stateDiagramAccountCycle.png](Img/stateDiagramAccountCycle.png)
+### Figure 6: User Creation Sequence 
+![Create_User.png](diagrams/Create_User.png)
 
-### Class Diagram
+### Figure 7: Account Creation Sequence
+![Create_Account_Checking.png](diagrams/Create_Account_Checking.png)
 
-![classDiagramBankBack.png](Img/classDiagramBankBack.png)
+### Figure 8: Deployment / Component Diagram 
+![Component_Deployment.png](diagrams/Component_Deployment.png)
 
-### Use Case Diagram
-
-![flowchartUseCaseBankBack.png](Img/flowchartUseCaseBankBack.png)
+### Figure 9: Entity–Relationship Diagram 
+![ER_Diagram.png](diagrams/ER_Diagram.png)
 
 ## Setup and Configuration
 
@@ -128,6 +137,52 @@ mvn spring-boot:run
   ```bash
   mvn verify
   ```
+
+## API Testing with Postman
+
+To explore and verify all endpoints interactively, import our Postman collection and environment:
+
+1. **Import the Collection**
+    - In Postman click **File → Import**, choose the **Link** tab and paste:
+      ```
+      https://.postman.co/workspace/My-Workspace~8427f1b1-b877-476c-8d49-8ade06a44b1d/collection/19714765-9ce82a7d-abaf-4a96-8abb-c08dc2ce187a?action=share&creator=19714765
+      ```  
+    - Click **Continue → Import**.
+   
+
+2. **Import the Environment**
+    - In Postman click the **Environments** dropdown (top right) → **Manage Environments → Import** → paste the same link (it will detect the environment).
+    - Or manually add a new environment named `BankBack` with these variables:
+
+   | Key           | Initial Value                                             |
+      | ------------- | --------------------------------------------------------- |
+   | `baseUrl`     | `http://localhost:8080`                                   |
+   | `adminUser`   | `admin`                                                   |
+   | `adminPass`   | `admin123`                                                |
+   | `holderUser`  | `alice`                                                   |
+   | `holderPass`  | `alice123`                                                |
+   | `thirdpUser`  | `thirdp`                                                  |
+   | `thirdpPass`  | `tp123`                                                   |
+   | `validHashKey`| `a1b2c3d4-e5f6-4712-89ab-cdef01234567`                     |
+
+3. **Activate the Environment**
+    - Select **BankBack** from the environment dropdown.
+
+
+4. **Run the Requests**
+    - Open any request folder (e.g. **User Management**, **Admin Operations**, **AccountHolder Operations**, **Third-Party Operations**, **Error Scenarios**).
+    - Click **Send** or use the **Collection Runner**.
+    - Postman will substitute `{{baseUrl}}`, `{{adminUser}}`, `{{adminPass}}`, etc., and handle Basic Auth automatically.
+
+---
+
+> **Tip:** Use Postman’s **Collection Runner** to automate your end‑to‑end tests in CI.
+
+## Presentation
+
+The slide deck for this project is available here:
+
+[📊 Download Presentation](docs/Bank%20Back%20-%20Lluc.pptx)
 
 ## Contributing
 
